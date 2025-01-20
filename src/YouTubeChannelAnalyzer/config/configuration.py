@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from googleapiclient.discovery import build
 from pymongo import MongoClient
 import certifi, os
-from YouTubeChannelAnalyzer.entity import DataIngestionConfig
+from YouTubeChannelAnalyzer.entity import DataIngestionConfig, DataTransformationConfig
 
 
 class ConfigurationManager():
@@ -22,6 +22,20 @@ class ConfigurationManager():
         config = self.config.data_ingestion
         create_directories([config.root_dir])
         return DataIngestionConfig(root_dir=config.root_dir)
+    
+
+    def get_data_transformation_config(self) -> DataTransformationConfig:
+        config = self.config.data_transformation  # Fetching the data_transformation section
+        create_directories([config.root_dir])
+        data_transformation_config = DataTransformationConfig(
+            root_dir=config.root_dir,
+            data_dir=config.data_dir
+        )
+        return data_transformation_config
+    
+
+
+
 
     def get_youtube_api_key(self) -> str:
         """
@@ -107,6 +121,17 @@ class MongoDBStorage:
             logger.info(f"Data for channel {channel_data['channel_id']} successfully inserted/updated.")
         except Exception as e:
             logger.error(f"Failed to insert/update channel data: {e}")
+            raise
+
+    def mongo_connect(self, connection_string, db_name='Project1'):
+        try:
+            client = MongoClient(connection_string, tls=True, tlsCAFile=certifi.where())
+            self.db = client[db_name]
+            print("Connected")
+            logger.info(f"Successfully connected to MongoDB database: {db_name}")
+            return self.db
+        except Exception as e:
+            logger.error(f"Failed to connect to MongoDB: {e}")
             raise
 
     def close(self):
