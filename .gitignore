@@ -135,6 +135,11 @@ yta/
 ENV/
 env.bak/
 yta.bak/
+/research/channelids_list.txt
+/research/Raw_Youtube_API_DATA.csv
+/logs
+
+artifacts/*
 
 # Spyder project settings
 .spyderproject
