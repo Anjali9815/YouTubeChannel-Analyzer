@@ -10,3 +10,9 @@ class DataIngestionConfig:
 class DataTransformationConfig():
     root_dir: Path
     data_dir: Path
+
+
+@dataclass(frozen= True)
+class DataAnalysisConfig():
+    root_dir: Path
+    data_dir : Path

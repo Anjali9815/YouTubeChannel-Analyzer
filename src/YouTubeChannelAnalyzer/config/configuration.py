@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from googleapiclient.discovery import build
 from pymongo import MongoClient
 import certifi, os
-from YouTubeChannelAnalyzer.entity import DataIngestionConfig, DataTransformationConfig
+from YouTubeChannelAnalyzer.entity import DataIngestionConfig, DataTransformationConfig, DataAnalysisConfig
 
 
 class ConfigurationManager():
@@ -32,6 +32,15 @@ class ConfigurationManager():
             data_dir=config.data_dir
         )
         return data_transformation_config
+    
+    def get_dataanalysis_config(self) -> DataAnalysisConfig:
+        config = self.config.data_analysis  # Fetching the model_trainer section
+        create_directories([config.root_dir])
+        dataanalysis_config = DataAnalysisConfig(
+            root_dir=config.root_dir,
+            data_dir=config.data_dir
+        )
+        return dataanalysis_config
     
 
 
