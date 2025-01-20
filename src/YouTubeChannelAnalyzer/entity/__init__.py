@@ -16,3 +16,13 @@ class DataTransformationConfig():
 class DataAnalysisConfig():
     root_dir: Path
     data_dir : Path
+
+
+@dataclass(frozen= True)
+class ModelTrainerconfig:
+    root_dir : Path
+    data_dir : Path
+    test_size: float
+    random_state_size: int
+    n_estimators: int
+    random_state : int

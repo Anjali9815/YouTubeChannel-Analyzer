@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from googleapiclient.discovery import build
 from pymongo import MongoClient
 import certifi, os
-from YouTubeChannelAnalyzer.entity import DataIngestionConfig, DataTransformationConfig, DataAnalysisConfig
+from YouTubeChannelAnalyzer.entity import DataIngestionConfig, DataTransformationConfig, DataAnalysisConfig, ModelTrainerconfig
 
 
 class ConfigurationManager():
@@ -41,6 +41,33 @@ class ConfigurationManager():
             data_dir=config.data_dir
         )
         return dataanalysis_config
+    
+
+
+    def get_model_training_config(self) -> ModelTrainerconfig:
+        try:
+            # Fetching the model_trainer section from the config file
+            config = self.config['model_trainer']  # Assuming ConfigBox returns a dict-like object
+            params = self.params['TrainingArguments']
+            create_directories([config['root_dir']])
+
+            model_training_config = ModelTrainerconfig(
+                root_dir=config['root_dir'],
+                data_dir=config['data_dir'],
+                test_size=params['test_size'],
+                random_state_size=params['random_state_size'],
+                n_estimators=params['n_estimators'],
+                random_state = params['random_state']
+            )
+
+            logger.info("Model training configuration loaded successfully.")
+            return model_training_config
+        except KeyError as e:
+            logger.error(f"Missing key in configuration: {e}")
+            raise
+        except Exception as e:
+            logger.error(f"Error fetching model training config: {e}")
+            raise
     
 
 
