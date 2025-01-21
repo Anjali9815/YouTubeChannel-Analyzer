@@ -79,7 +79,7 @@ class ConfigurationManager():
         If missing, logs an error and raises an exception.
         """
         youtube_api_key = os.getenv('YOUTUBE_API_KEY')
-        youtube_api_key = "AIzaSyBPJ64uexibg77DCSd6rSGU8loyOTvndjI"
+        # youtube_api_key = ""
         if not youtube_api_key:
             logger.error("YouTube API key is missing from the environment variables.")
             raise ValueError("YouTube API key is missing from environment variables.")
@@ -91,7 +91,7 @@ class ConfigurationManager():
         If missing, logs an error and raises an exception.
         """
         mongodb_uri = os.getenv('MONGODB_URI')
-        mongodb_uri = "mongodb+srv://anjalijha1507:U54OU4PFxPYlVc4S@youtubedata.shzzp.mongodb.net/?retryWrites=true&w=majority&appName=YoutubeData"
+        # mongodb_uri = ""
         if not mongodb_uri:
             logger.error("MongoDB URI is missing from the environment variables.")
             raise ValueError("MongoDB URI is missing from environment variables.")
