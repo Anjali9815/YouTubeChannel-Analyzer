@@ -6,7 +6,8 @@ from googleapiclient.discovery import build
 
 
 class DataIngestionTrainingPipeline:
-    def __init__(self):
+    def __init__(self, user_input = None):
+        self.user_input = user_input
         pass
 
     def main(self):
@@ -28,10 +29,10 @@ class DataIngestionTrainingPipeline:
         ingestion = DataIngestion(config=data_ingestion_config, youtube=youtube, db_storage=db_storage)
 
         # Get user input (either channel ID or video URL)
-        user_input = input("Please enter the YouTube video URL or Channel ID: ")
+        # user_input = input("Please enter the YouTube video URL or Channel ID: ")
 
         # Process the user input and begin scraping
-        ingestion.process_user_input(user_input)  # Pass start_date as well
+        ingestion.process_user_input(self.user_input)  # Pass start_date as well
 
 
 

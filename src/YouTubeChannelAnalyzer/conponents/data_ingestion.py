@@ -25,7 +25,6 @@ class DataIngestion:
         try:
             client = MongoClient(connection_string, tls=True, tlsCAFile=certifi.where())
             self.db = client[db_name]
-            print("Connected")
             logger.info(f"Successfully connected to MongoDB database: {db_name}")
             return self.db
         except Exception as e:
@@ -51,12 +50,10 @@ class DataIngestion:
         :return: Boolean indicating if the URL is valid.
         """
         pattern = r'(https?://)?(www\.)?(youtube|youtu)\.(com|be)/(?:[^/]+/|(?:v|e(?:mbed)?)/|watch\?v=)([A-Za-z0-9_-]{11})'
-        # print(bool(re.match(pattern, video_url)))
         return bool(re.match(pattern, video_url))
 
     def get_channel_id_from_video_url(self, video_url):
         try:
-            print("***********************")
             video_id_match = re.search(r'(?:youtu.be\/|youtube.com\/(?:v|e(?:mbed)?)\/|youtube.com\/watch\?v=)([a-zA-Z0-9_-]{11})', video_url)
             if video_id_match:
                 video_id = video_id_match.group(1)
@@ -68,7 +65,6 @@ class DataIngestion:
                 if 'items' in response and len(response['items']) > 0:
                     channel_id = response['items'][0]['snippet']['channelId']
                     logger.info(f"Channel ID for the video is: {channel_id}")
-                    print("chanelliddddddd", channel_id)
                     return channel_id
                 else:
                     logger.warning("No channel found for this video.")

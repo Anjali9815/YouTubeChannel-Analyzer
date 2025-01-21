@@ -163,7 +163,6 @@ class MongoDBStorage:
         try:
             client = MongoClient(connection_string, tls=True, tlsCAFile=certifi.where())
             self.db = client[db_name]
-            print("Connected")
             logger.info(f"Successfully connected to MongoDB database: {db_name}")
             return self.db
         except Exception as e:

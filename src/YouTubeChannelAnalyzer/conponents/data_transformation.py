@@ -51,7 +51,6 @@ class DataTrasformation():
             # Save to CSV
             df_data.to_csv(self.config.data_dir + "Raw_Youtube_API_DATA.csv", index=False)
         except Exception as e:
-            print(e)
             logger.error(f"Error processing data: {e}")
 
 

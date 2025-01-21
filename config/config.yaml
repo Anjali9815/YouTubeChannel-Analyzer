@@ -21,9 +21,3 @@ model_trainer:
   root_dir: artifacts/model_trainer/
   data_dir: artifacts/data_analysis/
 
-
-model_evaluation:
-  root_dir: artifacts/model_evaluation
-  data_path: artifacts/data_analysis/
-  model_path: artifacts/model_trainer/
-  
