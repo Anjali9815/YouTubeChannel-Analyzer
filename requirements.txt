@@ -4,4 +4,4 @@ matplotlib
 scikit-learn
 uvicon
 fastapi
--e
+-e .
