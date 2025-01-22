@@ -6,7 +6,7 @@ from googleapiclient.discovery import build
 from pymongo import MongoClient
 import certifi, os
 from YouTubeChannelAnalyzer.entity import DataIngestionConfig, DataTransformationConfig, DataAnalysisConfig, ModelTrainerconfig
-
+from decouple import config
 
 class ConfigurationManager():
     def __init__(self, config_filepath = CONFIG_FILE_PATH, params_filepath = PARAMS_FILE_PATH):
@@ -78,8 +78,7 @@ class ConfigurationManager():
         Retrieves the YouTube API key from environment variables.
         If missing, logs an error and raises an exception.
         """
-        youtube_api_key = os.getenv('YOUTUBE_API_KEY')
-        # youtube_api_key = ""
+        youtube_api_key = config('YOUTUBE_API_KEY')
         if not youtube_api_key:
             logger.error("YouTube API key is missing from the environment variables.")
             raise ValueError("YouTube API key is missing from environment variables.")
@@ -90,8 +89,7 @@ class ConfigurationManager():
         Retrieves the MongoDB connection string from environment variables.
         If missing, logs an error and raises an exception.
         """
-        mongodb_uri = os.getenv('MONGODB_URI')
-        # mongodb_uri = ""
+        mongodb_uri = config('MONGODB_URI')
         if not mongodb_uri:
             logger.error("MongoDB URI is missing from the environment variables.")
             raise ValueError("MongoDB URI is missing from environment variables.")
