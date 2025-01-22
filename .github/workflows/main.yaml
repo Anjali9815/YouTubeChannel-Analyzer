@@ -54,6 +54,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }}
           IMAGE_TAG: latest
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}         # Inject MongoDB URI
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }} # Inject YouTube API Key
         run: |
           # Build a docker container and
           # push it to ECR so that it can
@@ -92,7 +94,14 @@ jobs:
        
       - name: Run Docker Image to serve users
         run: |
-         docker run -d -p 8080:8080 --name=YouTubeAnalyzer -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' -e 'AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}' -e 'AWS_REGION=${{ secrets.AWS_REGION }}'  ${{secrets.AWS_ECR_LOGIN_URI}}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+          docker run -d -p 8080:8080 --name=YouTubeAnalyzer \
+            -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' \
+            -e 'AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}' \
+            -e 'AWS_REGION=${{ secrets.AWS_REGION }}' \
+            -e 'MONGODB_URI=${{ secrets.MONGODB_URI }}'         # Pass MongoDB URI as env var
+            -e 'YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}'   # Pass YouTube API Key as env var
+            ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+
       - name: Clean previous images and containers
         run: |
          docker system prune -f
