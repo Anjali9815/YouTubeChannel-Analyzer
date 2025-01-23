@@ -1,4 +1,6 @@
-pandas==2.2.3
+pandas==1.5.3
+# Add other dependencies as needed
+
 google-api-core==2.24.0
 matplotlib==3.10.0
 pymongo==4.10.1
