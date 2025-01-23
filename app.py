@@ -1,7 +1,9 @@
 from fastapi import FastAPI, BackgroundTasks, Query, Response
 from main import train_model  # Importing the function from trainer.py
 import logging
-
+from YouTubeChannelAnalyzer.pipeline.predict import YouTubeSubscriptionPrediction  # You can import from your actual model file
+from fastapi import FastAPI
+import uvicorn
 # FastAPI instance
 app = FastAPI()
 
@@ -69,3 +71,53 @@ async def training(background_tasks: BackgroundTasks,
         is_pipeline_running = False
         training_status = "Error occurred"
         return Response(f"Error occurred: {e}", status_code=500)
+
+
+
+
+# API endpoint for making predictions
+@app.get("/predict")
+async def predict_subscription_status(total_no_of_videos: float = Query(...),
+                                       total_no_short_videos: float = Query(...),
+                                       total_no_long_videos: float = Query(...),
+                                       total_views: float = Query(...),
+                                       total_likes: float = Query(...),
+                                       total_comments: float = Query(...),
+                                       days_since_start: float = Query(...),
+                                       days_since_inception: float = Query(...)):
+    """
+    This endpoint makes a prediction for the YouTube subscription status.
+    It receives input parameters and uses the YouTubeSubscriptionPrediction model to predict.
+    """
+    # Prepare the input data for prediction
+    input_data = {
+        'total_no_of_videos': total_no_of_videos,
+        'total_no_short_videos': total_no_short_videos,
+        'total_no_long_videos': total_no_long_videos,
+        'total_views': total_views,
+        'total_likes': total_likes,
+        'total_comments': total_comments,
+        'days_since_start': days_since_start,
+        'days_since_inception': days_since_inception
+    }
+
+    # Initialize the prediction model
+    subscription_predictor = YouTubeSubscriptionPrediction()
+
+    try:
+        # Predict the subscription status
+        predicted_value = subscription_predictor.predict_subscription_status(input_data)
+        
+        # If prediction was successful, return the predicted value
+        if predicted_value is not None:
+            predicted_value = predicted_value[0]  # Get the scalar value from the array
+            return {"predicted_subscription_status": f"{predicted_value:.2f} subscribers"}
+        else:
+            return Response("Prediction failed. Please check the input values.", status_code=400)
+    
+    except Exception as e:
+        logger.error(f"Prediction failed: {e}")
+        return Response(f"Prediction failed: {e}", status_code=500)
+
+if __name__=="__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8080)
