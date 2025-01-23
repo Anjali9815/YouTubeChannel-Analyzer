@@ -10,5 +10,5 @@ seaborn==0.13.2
 python-decouple==3.8
 numpy==1.22.1
 fastapi==0.95.0
-uvicorn==0.34.0
+uvicorn==0.13.4
 -e .
