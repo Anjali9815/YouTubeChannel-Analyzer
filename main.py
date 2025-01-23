@@ -56,3 +56,25 @@ def train_model(run_data_ingestion: bool = False, user_input: str = None):
         is_pipeline_running = False  # Reset the flag in case of error
         training_status = "Error occurred"
         return {"status": "error", "message": str(e)}
+
+
+# Data Transformation Stage (Always run)
+STAGE_NAME = "Data Transformation stage"
+logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
+data_transformation_stage = DataTransformationTrainingPipeline()
+data_transformation_stage.main()
+logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
+
+# Data Analysis Stage (Always run)
+STAGE_NAME = "Data Analysis stage"
+logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
+data_analysis_stage = DataAnalysisTrainingPipeline()
+data_analysis_stage.main()
+logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
+
+# Model Training Stage (Always run)
+STAGE_NAME = "Model Training stage"
+logger.info(f">>>>>> stage {STAGE_NAME} started <<<<<<")
+model_training_stage = ModelTrainingPipeline()
+model_training_stage.main()
+logger.info(f">>>>>> stage {STAGE_NAME} completed <<<<<<\n\nx==========x")
