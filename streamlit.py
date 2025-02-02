@@ -125,3 +125,4 @@ if prediction_submit_button:
         st.write(f"Predicted Subscription Status: {predicted_value:.2f} subscribers")
     else:
         st.error("Prediction failed. Please check the input values.")
+#  streamlit run /Users/anjalijha/Python/Project/YouTubeChannel-Analyzer/streamlit.py   
